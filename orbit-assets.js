@@ -9,8 +9,8 @@
 
   var DB_NAME = "orbit_asset_cache";
   var STORE = "blobs";
-  var LOGO_KEY = "logo_v4_orbit";
-  var LOGO_SRC = "orbit-bills-logo.png";
+  var LOGO_KEY = "logo_v5_ts";
+  var LOGO_SRC = "logo.png";
 
   function openDb() {
     return new Promise(function (resolve, reject) {
@@ -104,8 +104,8 @@
 
   function applyLogoToImgs(url) {
     if (!url) return;
-    // OrbitBills logo only on marked images (login / splash). In-app logo.png stays TechSerenia.
-    var imgs = document.querySelectorAll('img[data-orbit-logo], img.orbit-logo, img[src="orbit-bills-logo.png"], img[src="./orbit-bills-logo.png"]');
+    // TechSerenia logo across app UI (not app-icon / favicon files)
+    var imgs = document.querySelectorAll('img[src="logo.png"], img[src="./logo.png"], img[data-orbit-logo], img.orbit-logo, img.techserenia-logo');
     for (var i = 0; i < imgs.length; i++) {
       var img = imgs[i];
       if (img.getAttribute("data-orbit-logo-applied") === "1") continue;

@@ -164,7 +164,7 @@
     if(document.getElementById("orbitNavFill")) return;
     var fill = document.createElement("div");
     fill.id = "orbitNavFill"; fill.setAttribute("aria-hidden","true");
-    fill.style.cssText = "position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);min-height:0;background:"+(brand||"#ffffff")+";z-index:99998;pointer-events:none;";
+    fill.style.cssText = "position:fixed;left:0;right:0;bottom:0;height:max(env(safe-area-inset-bottom,0px),1px);min-height:env(safe-area-inset-bottom,0px);background:#ffffff;z-index:99998;pointer-events:none;";
     (document.body||document.documentElement).appendChild(fill);
   }
 
