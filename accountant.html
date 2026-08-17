@@ -83,8 +83,10 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
     display:flex!important;position:fixed!important;top:0;left:0;right:0;z-index:500!important;
     padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top,0px));
     min-height:calc(48px + env(safe-area-inset-top,0px));
+    height:calc(48px + env(safe-area-inset-top,0px));
     align-items:center;justify-content:space-between;
-    background:#ffffff!important;border-bottom:1px solid var(--border);box-sizing:border-box
+    background:#ffffff!important;border-bottom:1px solid var(--border);box-sizing:border-box;
+    box-shadow:0 1px 0 rgba(15,23,42,.04)
   }
   .mobile-bar .brand{display:flex!important;padding:0!important}
   .mobile-bar img{height:30px!important;width:auto;display:block}
@@ -92,9 +94,10 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
   .layout{
     display:flex!important;flex-direction:column!important;flex:1 1 auto!important;
     min-height:0!important;overflow:hidden!important;
-    margin-top:calc(52px + env(safe-area-inset-top,0px))!important;
-    height:calc(100dvh - 52px - env(safe-area-inset-top,0px))!important;
-    max-height:calc(100dvh - 52px - env(safe-area-inset-top,0px))!important
+    /* header height only — do not double-count safe-area (bar already includes it) */
+    margin-top:calc(48px + env(safe-area-inset-top,0px))!important;
+    height:calc(100dvh - 48px - env(safe-area-inset-top,0px))!important;
+    max-height:calc(100dvh - 48px - env(safe-area-inset-top,0px))!important
   }
   .sidebar{display:none!important}
   .sidebar.mobile-open{
@@ -120,14 +123,14 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
   .main{
     flex:1 1 auto!important;min-height:0!important;max-width:none!important;
     overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;
-    padding:14px 12px calc(28px + env(safe-area-inset-bottom,0px))!important;
+    padding:8px 12px calc(20px + env(safe-area-inset-bottom,0px))!important;
     touch-action:pan-y
   }
   .stat-grid{grid-template-columns:1fr 1fr!important;gap:10px;margin-bottom:12px}
   .stat-card{padding:14px!important;border-radius:14px}
   .stat-card .label{font-size:11px}
   .stat-card .value{font-size:18px!important}
-  .page-head{margin-bottom:12px;flex-direction:column;align-items:flex-start;gap:6px}
+  .page-head{margin-bottom:8px;margin-top:0;flex-direction:column;align-items:flex-start;gap:4px}
   .page-head h1{font-size:20px}
   .page-head p{font-size:13px}
   .toolbar{
@@ -136,7 +139,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
   }
   .toolbar input,.toolbar select{min-height:44px;font-size:16px;flex:1 1 110px;border-radius:12px}
   .toolbar{
-    position:sticky!important;top:calc(52px + env(safe-area-inset-top,0px))!important;z-index:35!important;
+    position:sticky!important;top:0!important;z-index:35!important;
     background:rgba(255,255,255,.96)!important;
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     padding:10px 12px!important;border-radius:14px;border:1px solid var(--border);
@@ -144,7 +147,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
   }
   .toolbar .btn{min-height:44px;border-radius:12px;font-size:14px}
   .main{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));padding-bottom:max(24px,env(safe-area-inset-bottom))}
-  .mobile-bar{padding-top:max(10px,env(safe-area-inset-top))}
+  /* safe-area already on .mobile-bar */
 
   .btn,.btn-sm{min-height:44px;border-radius:10px;padding:10px 14px;font-size:13px}
   .card{padding:14px;border-radius:14px;margin-bottom:12px}
@@ -253,10 +256,23 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
   }catch(e){}
 })();
 </script>
+
+<style id="orbit-acct-gap-fix">
+@media(max-width:900px){
+  html{background:#ffffff;}
+  .main > .toolbar.acct-period-bar,
+  .main > #acctPeriodBar{
+    margin-top:0!important;
+    margin-bottom:10px!important;
+  }
+  .main > .panel.active{margin-top:0!important;}
+  .main > .panel .page-head{margin-top:0!important;}
+}
+</style>
 </head>
 <body>
 <div id="orbitBoot" data-done="1" class="orbit-boot-done" style="display:none!important;pointer-events:none!important;visibility:hidden!important;opacity:0;z-index:-1;position:fixed;inset:0;">
-  <img src="logo.png" alt="OrbitBills" style="width:120px;height:120px;object-fit:contain;display:block;margin-bottom:18px;animation:orbitBootPulse 1.2s ease-in-out infinite" onerror="this.src='app-icon-192.png'">
+  <img src="logo.png" alt="TechSerenia" style="width:120px;height:120px;object-fit:contain;display:block;margin-bottom:18px;animation:orbitBootPulse 1.2s ease-in-out infinite" onerror="this.src='app-icon-192.png'">
   <div style="color:#000;font-weight:700;font-size:18px;font-family:system-ui,sans-serif;margin-bottom:6px">OrbitBills</div>
   <div style="color:#333;font-size:13px;opacity:.7;margin-bottom:20px">Loading…</div>
   <div style="width:120px;height:3px;border-radius:3px;background:#e8eef8;overflow:hidden">
@@ -292,18 +308,18 @@ td{padding:9px 10px;border-bottom:1px solid var(--border)}
 
 
 <div class="mobile-bar">
-  <div class="brand" style="padding:0"><img src="logo.png" alt="OrbitBills" onerror="this.style.display='none'"></div>
+  <div class="brand" style="padding:0"><img src="logo.png" alt="TechSerenia" onerror="this.style.display='none'"></div>
   <button class="hamburger" id="hamburgerBtn" type="button" aria-label="Open menu">&#9776;</button>
 </div>
 <div class="overlay-scrim" id="mobileScrim"></div>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo-fixed">
-      <img src="logo.png" alt="OrbitBills" onerror="this.style.display='none'">
+      <img src="logo.png" alt="TechSerenia" onerror="this.style.display='none'">
     </div>
     <div class="sidebar-scroll">
     <div class="brand">
-      <img src="logo.png" alt="OrbitBills" onerror="this.style.display='none'">
+      <img src="logo.png" alt="TechSerenia" onerror="this.style.display='none'">
     </div>
     <button class="nav-item active" data-panel="summary">Summary</button>
     <button class="nav-item" data-panel="rates">Tax by rate</button>

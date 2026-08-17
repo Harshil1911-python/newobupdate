@@ -12,14 +12,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="OrbitBills">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b3d91">
 <meta name="color-scheme" content="light">
 <title>Billing · TechSerenia</title>
 <link rel="icon" href="favicon.ico">
@@ -1277,6 +1277,23 @@ input,select,textarea{
   body.m-cart-open .m-cart-bar {
     filter: none !important;
     opacity: 1 !important;
+  }
+}
+</style>
+
+
+<style id="orbit-status-bar-fill">
+/* Status bar (battery/time) matches blue logo panel; icons rendered light by native/theme */
+html{background:#0b3d91;}
+@media (max-width:768px){
+  body::before{
+    content:""!important;position:fixed!important;top:0;left:0;right:0;
+    height:env(safe-area-inset-top,0px)!important;min-height:0;
+    background:#0b3d91!important;z-index:70!important;pointer-events:none!important;
+  }
+  header.app-bar{
+    background:#0b3d91!important;
+    border-bottom:none!important;
   }
 }
 </style>

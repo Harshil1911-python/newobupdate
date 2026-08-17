@@ -157,7 +157,7 @@
 
   async function setChromeColors(){
     var brand = "#ffffff";
-    try{ var StatusBar=plugin("StatusBar"); if(StatusBar){ if(StatusBar.setBackgroundColor) await StatusBar.setBackgroundColor({color:brand}); if(StatusBar.setStyle) await StatusBar.setStyle({style:"DARK"}); if(StatusBar.setOverlaysWebView) await StatusBar.setOverlaysWebView({overlay:false}); } }catch(e){}
+    try{ var StatusBar=plugin("StatusBar"); if(StatusBar){ if(StatusBar.setBackgroundColor) await StatusBar.setBackgroundColor({color:brand}); if(StatusBar.setStyle) await StatusBar.setStyle({style:"LIGHT"}); /* white battery/time on blue */ if(StatusBar.setOverlaysWebView) await StatusBar.setOverlaysWebView({overlay:false}); } }catch(e){}
     try{ var meta = document.querySelector('meta[name="theme-color"]'); if(meta) meta.setAttribute("content", brand); else { meta = document.createElement("meta"); meta.name = "theme-color"; meta.content = brand; document.head.appendChild(meta); } ensureNavFill(brand); }catch(e){}
   }
   function ensureNavFill(brand){
