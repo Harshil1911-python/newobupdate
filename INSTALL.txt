@@ -1,0 +1,44 @@
+OrbitBills phone app — fixed files package
+==========================================
+
+Contents
+--------
+SHARE_FIX.txt          — detailed explanation of the share-sheet fix
+INSTALL.txt            — this file
+web/
+  orbit-native.js      — deploy to Render site root (CRITICAL for online APK)
+  billing.html         — deploy to Render site root
+capacitor/
+  package.json         — adds @capacitor/local-notifications
+  capacitor.config.ts  — unchanged copy
+  app-config.json      — unchanged copy
+  orbit-native.js      — same as web (for offline / www)
+  www/
+    orbit-native.js
+    billing.html
+
+Deploy order (recommended)
+--------------------------
+1) WEB first (so live site used by online APK is fixed):
+   - Upload web/orbit-native.js → https://orbitbillsphone.onrender.com/orbit-native.js
+   - Upload web/billing.html → same host root
+   - Confirm in browser: hard refresh, create invoice → PNG share still works
+
+2) CAPACITOR APK:
+   - In OrbitBillsForPhoneCapacitor repo:
+       cp capacitor/package.json .
+       cp capacitor/orbit-native.js www/
+       cp capacitor/www/billing.html www/   # optional offline parity
+   - npm install
+   - npx cap sync android
+   - Build APK (Actions or gradlew assembleDebug)
+   - Install on phone; grant notifications when asked
+
+What you should see after update
+--------------------------------
+• Invoice PNG / Share opens system sheet with "File from TechSerenia"
+  and WhatsApp / Drive / etc. (same as browser screenshot)
+• Short success chime when a bill is created
+• System notification: "Bill created · INV-xxxxxxxx"
+• System notification for low stock / expiring (once per session)
+• Existing billing logic unchanged

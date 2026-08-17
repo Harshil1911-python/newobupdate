@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Offline · OrbitBills</title>
+<link rel="icon" href="favicon.ico">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100dvh;font-family:system-ui,sans-serif;color:#fff;
+    background:#000 url('app-icon-512.png') center 28%/min(220px,50vw) no-repeat;
+    display:flex;align-items:flex-end;justify-content:center;
+    padding:20px;padding-bottom:max(24px,env(safe-area-inset-bottom));
+  }
+  body::before{
+    content:"";position:fixed;inset:0;
+    background:linear-gradient(to bottom, rgba(0,0,0,.25) 0%, rgba(0,0,0,.75) 45%, #000 100%);
+    z-index:0;
+  }
+  .card{
+    position:relative;z-index:1;width:100%;max-width:400px;background:rgba(255,255,255,.96);color:#101a2b;
+    border-radius:18px;padding:24px 20px;text-align:center;
+  }
+  h1{font-size:20px;margin-bottom:8px}
+  p{font-size:14px;color:#5b6b82;line-height:1.5;margin-bottom:16px}
+  .btn{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:#0b3d91;color:#fff;font-weight:700;margin-bottom:8px;text-decoration:none}
+  .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #dfe7f5}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>You're offline</h1>
+    <p>No internet connection right now. You can still open Billing if you already signed in on this device.</p>
+    <a class="btn" href="signin.html">Go to Sign in</a>
+    <a class="btn ghost" href="billing.html">Open Billing</a>
+    <a class="btn ghost" href="index.html">Home</a>
+  </div>
+  <script src="orbit-native.js"></script>
+</body>
+</html>

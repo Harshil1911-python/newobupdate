@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="app-icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OrbitBills">
+<meta name="theme-color" content="#ffffff">
+<title>Sign in · OrbitBills</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--white:#ffffff;--ink:#101a2b;--slate:#5b6b82;--blue-deep:#0b3d91;--blue:#2f6feb;--blue-tint:#eaf1fc;--blue-tint-2:#f5f8fe;--border:#dfe7f5;--radius:14px;--error:#c0392b;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--blue-tint-2) 0%,var(--white) 60%);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;}
+  h1,h2,h3,.brand{font-family:'Space Grotesk',sans-serif;}
+  a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--ink);margin-bottom:28px;}
+  .brand-mark{height:48px;display:flex;align-items:center;flex-shrink:0;background:transparent;border:0;border-radius:0;padding:0;}
+  .brand-mark img{height:48px;width:auto;display:block;object-fit:contain;border-radius:0;background:transparent;}
+  .auth-card{width:100%;max-width:420px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:36px;box-shadow:0 20px 45px -20px rgba(11,61,145,0.2);}
+  .auth-card h2{font-size:22px;font-weight:700;margin-bottom:6px;}
+  .auth-card p.sub{font-size:14px;color:var(--slate);margin-bottom:24px;}
+  .form-field{margin-bottom:18px;}
+  .form-field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+  .pw-wrap{position:relative;display:flex;align-items:center}
+  .pw-wrap input{padding-right:72px!important}
+  .pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:#eaf1fc;color:var(--blue-deep);font-size:12px;font-weight:700;padding:8px 10px;border-radius:8px;cursor:pointer;font-family:inherit;min-height:36px}
+  .pw-eye:active{opacity:.85}
+  .form-field input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);background:var(--white);}
+  .form-field input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;background:var(--blue-deep);color:#fff;margin-top:6px;}
+  .btn:hover{background:#092f70;} .btn:disabled{opacity:0.6;cursor:not-allowed;}
+  .form-msg{font-size:13px;margin-top:14px;text-align:center;}
+  .form-msg.error{color:var(--error);} .form-msg.success{color:#158a53;}
+  .back-link{margin-top:22px;font-size:14px;color:var(--slate);text-align:center;}
+  .back-link a{color:var(--blue-deep);font-weight:600;}
+  input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default;}
+
+  /* Skeletal loading screen */
+  #orbitBoot{display:none!important;position:fixed;inset:0;z-index:999999;
+    background:#f5f8fe;
+    flex-direction:column;align-items:stretch;justify-content:flex-start;
+    padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    overflow:hidden;
+  }
+  #orbitBoot.show{display:flex!important;}
+  
+  
+  
+  #orbitBoot .sk-line{
+    height:14px;border-radius:8px;background:linear-gradient(90deg,#e8eef8 25%,#f5f8fe 50%,#e8eef8 75%);
+    background-size:200% 100%;animation:skShimmer 1.2s ease-in-out infinite;
+  }
+  #orbitBoot .sk-card{
+    background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;
+    box-shadow:0 1px 3px rgba(15,23,42,.05);
+  }
+  #orbitBoot .sk-row{display:flex;gap:10px;margin-bottom:12px;align-items:center;}
+  #orbitBoot .sk-row:last-child{margin-bottom:0;}
+  #orbitBoot .sk-avatar{width:44px;height:44px;border-radius:12px;flex-shrink:0;
+    background:linear-gradient(90deg,#e8eef8 25%,#f5f8fe 50%,#e8eef8 75%);background-size:200% 100%;
+    animation:skShimmer 1.2s ease-in-out infinite;}
+  #orbitBoot .sk-block{flex:1;display:flex;flex-direction:column;gap:8px;}
+  #orbitBoot .sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  #orbitBoot .sk-tile{height:72px;border-radius:14px;
+    background:linear-gradient(90deg,#e8eef8 25%,#f5f8fe 50%,#e8eef8 75%);background-size:200% 100%;
+    animation:skShimmer 1.2s ease-in-out infinite;}
+  
+  @keyframes skShimmer{
+    0%{background-position:200% 0}
+    100%{background-position:-200% 0}
+  }
+</style>
+
+<script>
+(function(){
+  try{
+    if(!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(function(){});
+  }catch(e){}
+})();
+</script>
+
+<style id="orbit-kill-overscroll">html,body{overscroll-behavior:none!important;overscroll-behavior-y:none!important}</style>
+</head>
+<body>
+  <a href="index.html" class="brand"><span class="brand-mark"><img src="logo.png" data-orbit-logo class="orbit-logo" alt="Techserenia" onerror="this.style.display='none'"></span></a>
+  <div class="auth-card">
+    <h2>Welcome back</h2>
+    <p class="sub">Onboard OrbitBills By TechSerenia</p>
+    <form id="loginForm">
+      <div class="form-field"><label for="loginEmail">Work email</label>
+        <input type="email" id="loginEmail" name="email" placeholder="Enter your work email" required autocomplete="username"></div>
+      <div class="form-field"><label for="loginPassword">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="loginPassword" name="password" placeholder="" required autocomplete="current-password">
+          <button type="button" class="pw-eye" id="togglePassword" aria-label="Show password" title="Show password">Show</button>
+        </div></div>
+      <button type="submit" class="btn" id="loginSubmit">Sign in</button>
+    </form>
+    <div class="form-msg" id="loginMsg"></div>
+    <div id="panelPicker" style="display:none;margin-top:18px">
+      <p class="sub" style="margin-bottom:12px">Choose where to go</p>
+      <button type="button" class="btn" data-go="billing.html" style="margin-bottom:8px;background:#0b3d91">Billing</button>
+      <button type="button" class="btn" data-go="admin-dashboard.html" style="margin-bottom:8px;background:#2f6feb">Admin</button>
+      <button type="button" class="btn" data-go="accountant-dashboard.html" style="margin-bottom:8px;background:#158a53">Accountant</button>
+    </div>
+    <div class="back-link"><a href="index.html">Back to home</a></div>
+  </div>
+
+  <div id="orbitBoot" style="display:none;position:fixed;inset:0;z-index:2147483646;background:#ffffff;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <img src="logo.png" alt="OrbitBills" style="width:120px;height:120px;object-fit:contain;display:block;margin-bottom:18px" onerror="this.src='app-icon-192.png'">
+  <div style="color:#000;font-weight:700;font-size:18px;font-family:system-ui,sans-serif;margin-bottom:6px">OrbitBills</div>
+  <div style="color:#333;font-size:13px;opacity:.7">Loading…</div>
+</div>
+<script src="Db.js"></script>
+
+<script>
+(function orbitAutoResume(){
+  try {
+    var raw = localStorage.getItem("ts_session");
+    if (!raw) return;
+    var s = null;
+    try { s = JSON.parse(raw); } catch (e) { return; }
+    if (!s || !s.email) return;
+
+    // Always open Billing when already logged in. Switch panels via Change panel menu.
+    try { localStorage.setItem("ts_last_panel", "billing.html"); } catch (e) {}
+    window.location.replace("billing.html");
+  } catch (e) {}
+})();
+</script>
+
+
+
+
+<script>
+  document.getElementById("togglePassword")?.addEventListener("click", function(){
+    var input = document.getElementById("loginPassword");
+    var btn = document.getElementById("togglePassword");
+    if(!input) return;
+    if(input.type === "password"){
+      input.type = "text";
+      if(btn){ btn.textContent = "Hide"; btn.setAttribute("aria-label","Hide password"); btn.title = "Hide password"; }
+    } else {
+      input.type = "password";
+      if(btn){ btn.textContent = "Show"; btn.setAttribute("aria-label","Show password"); btn.title = "Show password"; }
+    }
+  });
+
+  function showBoot(){ /* disabled — no interstitial loading screen */ }
+  function hideBoot(){
+    var el = document.getElementById("orbitBoot");
+    if(el){
+      el.style.cssText = "display:none!important";
+    }
+  }
+  function hideBoot(){
+    var el = document.getElementById("orbitBoot");
+    if(el){
+      el.classList.remove("show");
+      el.style.setProperty("display","none","important");
+    }
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("loginMsg");
+    const submitBtn = document.getElementById("loginSubmit");
+    msg.textContent = ""; msg.className = "form-msg"; submitBtn.disabled = true;
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    try {
+      const data = await tsLogin(email, password);
+      if (!data.ok) {
+        msg.textContent = data.error || "Could not sign in.";
+        msg.className = "form-msg error";
+        submitBtn.disabled = false;
+        return;
+      }
+      // No loading screen — hide form immediately to prevent flash, then go to panel
+      try {
+        var card = document.querySelector(".card, .login-card, main, .auth-wrap, form");
+        if (card) card.style.visibility = "hidden";
+        document.body.style.opacity = "0";
+      } catch (e) {}
+      try { hideBoot(); } catch (e) {}
+      // Role-based destination from tsLogin (no wait / no skeleton / no flash)
+      var href = (data && data.redirect) || "billing.html";
+      try {
+        if (typeof tsRememberPanel === "function") tsRememberPanel(href);
+        else localStorage.setItem("ts_last_panel", href);
+      } catch (e) {}
+      try {
+        if (typeof tsSeedDefaults === "function") tsSeedDefaults().catch(function(){});
+      } catch (e) {}
+      window.location.replace(href);
+    } catch (err) {
+      msg.textContent = "Something went wrong. Please try again.";
+      msg.className = "form-msg error";
+      submitBtn.disabled = false;
+      var boot = document.getElementById("orbitBoot");
+      if(boot) boot.classList.remove("show");
+    }
+  });
+  document.querySelectorAll("#panelPicker [data-go]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var href = btn.getAttribute("data-go");
+      try{
+        if(typeof tsRememberPanel === "function") tsRememberPanel(href);
+        else localStorage.setItem("ts_last_panel", href);
+      }catch(e){}
+      window.location.replace(href);
+    });
+  });
+  (async function () { await tsSeedDefaults().catch(() => {}); })();
+</script>
+<script src="orbit-native.js"></script>
+<script src="orbit-assets.js"></script>
+</body>
+</html>

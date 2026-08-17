@@ -1,0 +1,106 @@
+HOW THE SHARE SHEET WAS FIXED IN THE ORBITBILLS PHONE APP
+=========================================================
+Date: 2026-08-12
+
+PROBLEM
+-------
+On orbitbillsphone.onrender.com (Chrome / browser), opening an invoice
+(billing → Transactions → open invoice → PNG / Share) correctly shows the
+Android system sheet: "Sharing image" with "File from TechSerenia" and
+targets like WhatsApp, Drive, Instagram, etc.
+
+In the Capacitor APK (OrbitBills / TS OrbitBills) that same flow stopped
+opening a proper file share sheet (or only shared text). Older APK builds
+used to work.
+
+ROOT CAUSE
+----------
+Capacitor WebViews cannot reliably hand a pure in-memory Blob / File to
+WhatsApp the way Chrome does via navigator.share({ files: [file] }).
+
+The system share sheet only attaches a real file for chat apps when it
+receives a content:// or file:// URI that points at a file on disk.
+
+The previous helper sometimes:
+  • relied only on navigator.share with a File object (works in Chrome,
+    often fails or strips the attachment inside Capacitor WebView), or
+  • wrote to EXTERNAL / Pictures paths that need runtime storage
+    permissions on newer Android versions and can silently fail.
+
+THE FIX (in orbit-native.js → window.__orbitNativeShare)
+--------------------------------------------------------
+1. Detect native platform: Capacitor.isNativePlatform().
+
+2. Convert the PNG/PDF Blob to base64 with FileReader.
+
+3. Write the file with @capacitor/filesystem into app-private dirs that
+   do NOT need dangerous storage permissions:
+      CACHE  →  TechSerenia/<filename>
+      DATA   →  TechSerenia/<filename>
+   (several path attempts for resilience)
+
+4. Call Filesystem.getUri(...) to obtain a content URI the Share plugin
+   can expose to other apps.
+
+5. Call @capacitor/share:
+      Share.share({
+        title, text,
+        dialogTitle: "Share invoice",
+        files: [uri],   // ← critical for WhatsApp attachment
+        url: uri        // fallback for older plugin behaviour
+      })
+
+6. Fallbacks (in order):
+   • Share with url only
+   • navigator.share with File (browser / some WebViews)
+   • navigator.share text-only
+   • classic <a download> + in-app Downloads list
+
+Because the APK often loads the LIVE site when online
+(preferLiveWhenOnline), the SAME orbit-native.js must be deployed to:
+  • Render (web root of orbitbillsphone.onrender.com)
+  • Capacitor project www/orbit-native.js (offline bundle)
+
+billing.html already calls __orbitNativeShare from:
+  • PNG / Share buttons on the invoice export modal
+  • prepareAndOpenInvoiceShare after creating an invoice
+  • saveBlobToDevice / Downloads → Share
+
+OTHER FEATURES ADDED IN THIS PACKAGE
+------------------------------------
+• Success chime on invoice create (already present; reinforced via
+  __orbitPlaySuccessTone + existing playInvoiceSuccessSound).
+
+• Native system notifications (like WhatsApp / Instagram tray):
+  - Bill created successfully (title includes bill number + total)
+  - Low stock (once per session when low stock list is non-empty)
+  - Expiring stock within 30 days (once per session)
+  Implemented with @capacitor/local-notifications +
+  window.__orbitNotify / __orbitNotifyInvoice / __orbitNotifyLowStock /
+  __orbitNotifyExpiring. Browser Notification API is used as web fallback.
+
+• Native polish: status/nav bar colours, offline banner, Android back
+  handling, haptics, wake-lock on billing, soft sheet animation CSS.
+
+HOW TO APPLY
+------------
+WEB (Render):
+  1. Upload web/orbit-native.js and web/billing.html to the site root.
+  2. Hard-refresh or purge CDN cache.
+
+CAPACITOR APK:
+  1. Copy orbit-native.js → www/orbit-native.js (and root if used).
+  2. Copy billing.html into www/ if you ship offline pages.
+  3. Merge capacitor/package.json (adds @capacitor/local-notifications).
+  4. npm install
+  5. npx cap sync android
+  6. Rebuild APK (Android Studio or ./gradlew assembleDebug / GitHub Actions).
+
+Android 13+: first launch will ask for notification permission — accept
+to get bill / stock alerts in the system tray.
+
+EXISTING LOGIC
+--------------
+IndexedDB local-first, hybrid live/offline redirect, roles, GST, stock
+variants, quotations, and checkout flow are unchanged. Only share,
+notification hooks, and minor native chrome were extended.

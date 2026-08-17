@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>OrbitBills</title>
+<style>
+  html,body{
+    margin:0;height:100%;background:#ffffff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:system-ui,-apple-system,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .wrap{text-align:center;padding:24px;}
+  .logo{
+    width:120px;height:120px;margin:0 auto 20px;
+    display:block;object-fit:contain;
+    animation:pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.04);opacity:.92}}
+  .title{font-weight:700;font-size:20px;color:#0b0b0b;letter-spacing:-0.02em;margin:0 0 6px}
+  .sub{font-size:13px;color:#333;opacity:.7;margin:0 0 22px}
+  .bar{
+    width:120px;height:3px;border-radius:3px;background:#e8eef8;
+    margin:0 auto;overflow:hidden;
+  }
+  .bar i{
+    display:block;height:100%;width:40%;background:#0b3d91;border-radius:3px;
+    animation:slide 1s ease-in-out infinite;
+  }
+  @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(280%)}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <img class="logo" src="logo.png" alt="OrbitBills" onerror="this.src='app-icon-192.png'">
+    <div class="title">OrbitBills</div>
+    <div class="sub">Starting</div>
+    <div class="bar"><i></i></div>
+  </div>
+  <script>
+    setTimeout(function(){ location.replace("index.html"); }, 700);
+  </script>
+</body>
+</html>
